@@ -1,0 +1,2 @@
+                <hr>
+                <p><strong>Your Role:</strong> <span class="badge bg-{{ 'danger' if role == 'admin' else 'info' if role == 'moderator' else 'warning' if role == 'guest' else 'secondary' }}">{{ role.title() }}</span></p> 

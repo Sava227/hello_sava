@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Moderator Panel - Sava Chatbot{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-info mb-4">
+            <i class="bi bi-shield"></i> Moderator Panel
+        </h2>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Banned Users -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-person-x"></i> Banned Users</h5>
+            </div>
+            <div class="card-body">
+                {% if bans %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Expires In</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user, minutes_remaining in bans.items() %}
+                                <tr>
+                                    <td>{{ user }}</td>
+                                    <td>{{ minutes_remaining }} min</td>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('admin_unban') }}" class="d-inline">
+                                            <input type="hidden" name="username" value="{{ user }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Unban</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle"></i> No banned users at the moment
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Muted Users -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="bi bi-volume-mute"></i> Muted Users</h5>
+            </div>
+            <div class="card-body">
+                {% if mutes %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Expires In</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user, minutes_remaining in mutes.items() %}
+                                <tr>
+                                    <td>{{ user }}</td>
+                                    <td>{{ minutes_remaining }} min</td>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('admin_unmute') }}" class="d-inline">
+                                            <input type="hidden" name="username" value="{{ user }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Unmute</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle"></i> No muted users at the moment
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm border-info">
+            <div class="card-body text-center">
+                <h5 class="text-info">
+                    <i class="bi bi-info-circle"></i> Moderator Privileges
+                </h5>
+                <p class="text-muted">
+                    As a moderator, you can view and manage banned/muted users. 
+                    For additional administrative functions, contact an administrator.
+                </p>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-eye text-primary display-6"></i>
+                            <p class="mt-2 mb-0">View Lists</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-person-check text-success display-6"></i>
+                            <p class="mt-2 mb-0">Unban Users</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3">
+                            <i class="bi bi-volume-up text-warning display-6"></i>
+                            <p class="mt-2 mb-0">Unmute Users</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('chat') }}" class="btn btn-primary">
+            <i class="bi bi-arrow-left"></i> Back to Chat
+        </a>
+    </div>
+</div>
+{% endblock %} 

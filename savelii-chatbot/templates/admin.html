@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - Sava Chatbot{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="text-danger mb-4">
+            <i class="bi bi-gear"></i> Administrator Panel
+        </h2>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Banned Users -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-person-x"></i> Banned Users</h5>
+            </div>
+            <div class="card-body">
+                {% if bans %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Expires In</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user, minutes_remaining in bans.items() %}
+                                <tr>
+                                    <td>{{ user }}</td>
+                                    <td>{{ minutes_remaining }} min</td>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('admin_unban') }}" class="d-inline">
+                                            <input type="hidden" name="username" value="{{ user }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Unban</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No banned users</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Muted Users -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="bi bi-volume-mute"></i> Muted Users</h5>
+            </div>
+            <div class="card-body">
+                {% if mutes %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Expires In</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user, minutes_remaining in mutes.items() %}
+                                <tr>
+                                    <td>{{ user }}</td>
+                                    <td>{{ minutes_remaining }} min</td>
+                                    <td>
+                                        <form method="POST" action="{{ url_for('admin_unmute') }}" class="d-inline">
+                                            <input type="hidden" name="username" value="{{ user }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-success">Unmute</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No muted users</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Mute User -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="bi bi-person-dash"></i> Mute User</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('admin_mute') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Duration (minutes)</label>
+                        <input type="number" class="form-control" name="duration" value="5" min="1">
+                    </div>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-volume-mute"></i> Mute User
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bad Words Management -->
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Bad Words Filter</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('update_bad_words') }}">
+                    <div class="mb-3">
+                        <label for="words" class="form-label">Bad Words (comma-separated)</label>
+                        <textarea class="form-control" name="words" rows="4" required>{{ bad_words | join(', ') }}</textarea>
+                        <div class="form-text">Users will be automatically banned for using these words</div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="bi bi-save"></i> Update List
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Learned Responses -->
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-brain"></i> Learned Responses ({{ learned_responses | length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if learned_responses %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Answer</th>
+                                    <th>Keyword</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for question, data in learned_responses.items() %}
+                                <tr>
+                                    <td><code>{{ question }}</code></td>
+                                    <td>{{ data.answer }}</td>
+                                    <td><span class="badge bg-info">{{ data.keyword }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted">No learned responses yet</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('chat') }}" class="btn btn-primary">
+            <i class="bi bi-arrow-left"></i> Back to Chat
+        </a>
+    </div>
+</div>
+{% endblock %} 

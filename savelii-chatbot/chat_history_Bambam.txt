@@ -1,0 +1,2 @@
+[2025-06-03 21:41:28] User Bambam logged in with role user.
+[2025-06-03 21:47:52] User: logout

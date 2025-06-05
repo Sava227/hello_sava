@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Sava Chatbot{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary">
+                <i class="bi bi-robot"></i> Welcome to Sava Chatbot
+            </h1>
+            <p class="lead text-muted">Your friendly AI companion for conversations and games</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="text-primary mb-3">
+                            <i class="bi bi-chat-heart display-4"></i>
+                        </div>
+                        <h5 class="card-title">Smart Conversations</h5>
+                        <p class="card-text">Chat with Sava and teach him new responses. The more you interact, the smarter he becomes!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="text-success mb-3">
+                            <i class="bi bi-puzzle display-4"></i>
+                        </div>
+                        <h5 class="card-title">Play Wordle</h5>
+                        <p class="card-text">Challenge yourself with our built-in Wordle game. Guess the 5-letter word in 6 tries!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="text-warning mb-2">
+                            <i class="bi bi-person-circle display-6"></i>
+                        </div>
+                        <h6 class="card-title">Regular User</h6>
+                        <p class="card-text small">Chat, play games, and teach Sava</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="text-info mb-2">
+                            <i class="bi bi-shield display-6"></i>
+                        </div>
+                        <h6 class="card-title">Moderator</h6>
+                        <p class="card-text small">Manage bans and mutes</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="text-danger mb-2">
+                            <i class="bi bi-gear display-6"></i>
+                        </div>
+                        <h6 class="card-title">Administrator</h6>
+                        <p class="card-text small">Full system control</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            {% if not session.username %}
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg px-5">
+                    <i class="bi bi-box-arrow-in-right"></i> Get Started
+                </a>
+            {% else %}
+                <a href="{{ url_for('chat') }}" class="btn btn-success btn-lg px-5">
+                    <i class="bi bi-chat-dots"></i> Start Chatting
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="mt-5 p-4 bg-white rounded shadow-sm">
+            <h5 class="text-primary mb-3">Features</h5>
+            <div class="row">
+                <div class="col-sm-6">
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-check-circle text-success"></i> Multi-language greetings</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Learning system</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Chat history</li>
+                    </ul>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-check-circle text-success"></i> User moderation</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Built-in games</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Role-based access</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
