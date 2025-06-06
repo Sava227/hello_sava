@@ -309,7 +309,8 @@ def wordle():
     word_list = [
         "apple", "grape", "table", "chair", "plant", "brick", "smile", "light", "spine", "plane", "beach", "ducat",
         "youth", "books", "couch", "tried", "stone", "pride", "level", "jelly", "mango", "grind", "shine", "piano",
-        "grain", "eagle", "candy", "lemon", "zebra", "spoon", "glass", "brush", "sugar", "bliss", "storm", "flame"
+        "grain", "eagle", "candy", "lemon", "zebra", "spoon", "glass", "brush", "sugar", "bliss", "storm", "flame",
+        "trace", "tears", "raise", "roate", "rates", "arles"
     ]
     target = random.choice(word_list)
     session['wordle_word'] = target
@@ -444,4 +445,4 @@ def update_bad_words():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True, host='0.0.0.0', port=5001) 
+    app.run(debug=True, host='0.0.0.0', port=80) 
